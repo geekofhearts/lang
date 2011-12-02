@@ -1,0 +1,2 @@
+#define __LANG_MAJOR_VERSION__ 0
+#define __LANG_MINOR_VERSION__ 1

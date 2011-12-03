@@ -1,0 +1,4 @@
+LANG - a new scripting language.
+
+a scripting language that's a bit closer to the metal. write C code that doesn't need compiling, but just runs in the shell, and nearly as fast as real c too.
+

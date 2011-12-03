@@ -1,7 +1,7 @@
-all: lang perms
+all: lang
 
-lang: dirs temp/main.o temp/prompt.o temp/script.o
-	gcc temp/*.o -o lang
+lang: dirs temp/main.o temp/prompt.o temp/script.o temp/context.o temp/variable.o temp/error.o
+	gcc temp/*.o -lpthread -o lang
 
 dirs:
 	test -d "temp" || mkdir temp
@@ -15,8 +15,14 @@ temp/prompt.o:
 temp/script.o:
 	gcc -c src/script.c -o temp/script.o
 
-perms:
-	chmod +x lang
+temp/context.o:
+	gcc -c src/context.c -o temp/context.o
+
+temp/variable.o:
+	gcc -c src/variable.c -o temp/variable.o
+
+temp/error.o:
+	gcc -c src/error.c -o temp/error.o
 
 clean:
 	rm -Rf temp

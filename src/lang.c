@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <signal.h>
 #include "lang.h"
 #include "script.h"
 #include "prompt.h"
@@ -8,8 +9,12 @@
 char** parseopts(int, char**, int*);
 void print_version_info(char*);
 int file_exists(const char*);
+void setup_error_handling(void);
+void segfault_handler(int);
 
 int main(int argc, char** argv) {
+  
+  setup_error_handling();
   
   if (argc > 1) {
     int* script_argc = (int*)malloc(sizeof(int));
@@ -59,3 +64,22 @@ int file_exists(const char* filename) {
   }
   return 0;
 }
+
+void setup_error_handling(void) {
+  struct sigaction* action = (struct sigaction*)malloc(sizeof(struct sigaction));
+  
+  action->sa_handler = &segfault_handler;
+  sigemptyset(&(action->sa_mask));
+  action->sa_flags = 0;
+  
+  sigaction(SIGSEGV, action, NULL);
+}
+
+void segfault_handler(int signal) {
+  printf("ERROR: caught a segmentation fault: most likely the system refused to allocate the RAM you or lang requested.\n");
+  printf("exiting now.\n");
+  exit(1);
+}
+
+
+
